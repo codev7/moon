@@ -47,10 +47,13 @@ func (d *defaultApp) loadTemplate(tfile, js, style string) {
 	d.template = tpl
 }
 
-func (s *Server) MapRoutes() {
+func (s *Server) mapRoutes() {
 	r := s.router
+
 	cwd, _ := os.Getwd()
 	static := path.Join(cwd, s.config.static)
+	// ensure bundles exist
+	ensureBundles(s.config.js, s.config.style, static)
 	// create the default app (the route used to serve the client app)
 	app := defaultApp{filedir: http.Dir(static)}
 	app.loadTemplate(s.config.template, s.config.js, s.config.style)
@@ -116,6 +119,21 @@ func (s *Server) Endpoint(pattern string, opts int, h httprouter.Handle) {
 	if opts&API_POST == API_POST {
 		s.router.POST(fpat, h)
 	}
+}
+
+func ensureBundles(js, style, dir string) {
+	f0, err := os.Open(path.Join(dir, js))
+	if err != nil {
+		log.Errorln("Js bundle", err)
+		os.Exit(1)
+	}
+	defer f0.Close()
+	f1, err := os.Open(path.Join(dir, style))
+	if err != nil {
+		log.Errorln("Css bundle", err)
+		os.Exit(1)
+	}
+	defer f1.Close()
 }
 
 func base(s string) string {

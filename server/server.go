@@ -36,7 +36,7 @@ func (s *Server) Bootstrap() {
 	s.router = router
 
 	log.Infoln("loading routes")
-	s.MapRoutes()
+	s.mapRoutes()
 	log.Infoln("loading endpoints")
 	s.DefineEndpoints()
 
