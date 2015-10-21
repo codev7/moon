@@ -1,4 +1,3 @@
 node_modules/
 build/serverbin
 static/bundle.js
-static/bundle.css
