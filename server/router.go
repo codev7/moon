@@ -47,21 +47,6 @@ func (d *defaultApp) loadTemplate(tfile, js, style string) {
 	d.template = tpl
 }
 
-func (s *Server) mapRoutes() {
-	r := s.router
-
-	cwd, _ := os.Getwd()
-	static := path.Join(cwd, s.config.static)
-	// ensure bundles exist
-	ensureBundles(s.config.js, s.config.style, static)
-	// create the default app (the route used to serve the client app)
-	app := defaultApp{filedir: http.Dir(static)}
-	app.loadTemplate(s.config.template, s.config.js, s.config.style)
-	// if it's not an api call then we use the app, after first checking
-	// if there's a file matching the route
-	r.NotFound = app
-}
-
 func (r defaultApp) checkStaticFile(w http.ResponseWriter, req *http.Request) bool {
 	f, _ := r.filedir.Open(req.RequestURI)
 	if f != nil {
@@ -107,6 +92,21 @@ func (r defaultApp) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
+}
+
+func (s *Server) mapRoutes() {
+	r := s.router
+
+	cwd, _ := os.Getwd()
+	static := path.Join(cwd, s.config.static)
+	// ensure bundles exist
+	ensureBundles(s.config.js, s.config.style, static)
+	// create the default app (the route used to serve the client app)
+	app := defaultApp{filedir: http.Dir(static)}
+	app.loadTemplate(s.config.template, s.config.js, s.config.style)
+	// if it's not an api call then we use the app, after first checking
+	// if there's a file matching the route
+	r.NotFound = app
 }
 
 // Adds an api endpoint
