@@ -9,15 +9,15 @@ React is a good choice for a front-end framework to integrate with moon.
 
 # config
 
-The config languagee is toml
+The config language is toml
 
 ```toml
 [common]	
-env = "dev" 					# dev|prod
-js = "bundle.js" 			# Auto-prefixed with root
-style = "bundle.css" 	# Auto-prefixed with root
-static = "static" 		# Images, stubs, etc
-api = "/api/" 				# prefix for api endpoints 
+env = "dev" # dev|prod
+js = "bundle.js" # Auto-prefixed with root
+style = "bundle.css" # Auto-prefixed with root
+static = "static" # Images, stubs, etc
+api = "/api/" # prefix for api endpoints 
 
 [server]
 template = "template.html.tpl"
