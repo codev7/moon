@@ -1,0 +1,16 @@
+{
+  "name": "gomoon",
+  "version": "1.0.0",
+  "description": "Go web application framework",
+  "author": "huoy",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/huoy/moon"
+  },
+  "dependencies": {
+    "npm": "^3.3.8",
+    "toml": "^2.3.0",
+    "webpack": "^1.12.2"
+  }
+}
