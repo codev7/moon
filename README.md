@@ -2,14 +2,13 @@
 
 moon is a minimal backend web application framework written in Go. Its purpose is rapid prototyping with an SPA design pattern. It achieves this with opinionated routing and webpack.
 
-Out of the box the webpack config is extremely barebones. This is intentional, as the purpose of this project isn't to make frontend decisions.
-
+The webpack config is extremely basic. This is intentional, as the purpose of this project isn't to make frontend decisions.
 
 React is a good choice for a frontend framework to integrate with moon.
 
 # config
 
-The config language is toml
+The configuration language is toml
 
 ```toml
 [common]	
@@ -30,10 +29,10 @@ dir = "client"
 
 # routing
 
-The router is setup to serve 3 types of routes by default:
+The router is setup to serve 3 types of routes:
 
 1. API endpoints which are prefixed with the `api` config entry 
-2. Static files which are stored in the location pointed to by the `static` config entry
+2. Static files which are stored in the directory pointed to by the `static` config entry
 3. Default to client routing. If the prior two cases aren't satisfied, the server will send the frontend application code. The application takes the form of an html5 template with a link and script tag pointing to the css and js bundles that were output by webpack. 
 
 # usage
@@ -64,9 +63,9 @@ A very simple Makefile is provided to build and run the server.
 
 `make run-server`
 
-Navigate to http://localhost:8888 and verify that "Hello World!" is output in your browser console.
+Navigate to `http://localhost:8888` and verify that "Hello World" is output in your browser console.
 
-Check http://localhost:8888/api/version to see the endpoint support.
+Check `http://localhost:8888/api/version` to see the endpoint support.
 
 # adding endpoints
 
@@ -84,7 +83,7 @@ s.Endpoint("/user/:id/:action", API_POST, UserEndpoint)
 
 Could be reached at http://localhost/api/user/1/edit
 
-Note that API_GET, API_POST, and API_BOTH are bit masked in order to determine allowed methods for the router.
+Note that `API_GET`, `API_POST`, and `API_BOTH` are bit masked in order to determine allowed methods for the router.
 
 # todo
 
