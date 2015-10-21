@@ -33,7 +33,7 @@ dir = "client"
 The router is setup to serve 3 types of routes by default:
 
 1. API endpoints which are prefixed with the `api` config entry 
-2. Static files which are stored in the location pointed to by the "static" config option
+2. Static files which are stored in the location pointed to by the `static` config entry
 3. Default to client routing. If the prior two cases aren't satisfied, the server will send the frontend application code. The application takes the form of an html5 template with a link and script tag pointing to the css and js bundles that were output by webpack. 
 
 # usage
@@ -64,17 +64,17 @@ A very simple Makefile is provided to build and run the server.
 
 `make run-server`
 
-Navigate to http://localhost:8888 and verify that "Hello World" is output in your browser console.
+Navigate to http://localhost:8888 and verify that "Hello World!" is output in your browser console.
 
 Check http://localhost:8888/api/version to see the endpoint support.
 
 # adding endpoints
 
-A simple version endpoint is provided in the /server/api.go file. You can manage all of your endpoints from this file. Endpoints must implement httprouter.Handle. In other words they need the same signature as the VersionEndpoint function found in api.go. 
+A simple version endpoint is provided in the /server/api.go file. You can manage all of your endpoints from this file. Endpoints must implement httprouter.Handle. In other words they need the same signature as the VersionEndpoint function. 
 
-To add your own endpoint, create a new function with the same signature as VersionEndpoint. Call it whatever you want. Then add the endpoint to the DefineEndpoints function found in api.go. 
+To add your own endpoint, create a new function with the same signature as VersionEndpoint. Then add the endpoint as shown below. 
 
-The endpoint can have paramaterized syntax provided by httprouter. Just remember that the endpoint will be prefixed with whatever you have set in your config.
+Endpoints can have paramaterized syntax provided by httprouter. Just remember that the endpoint will be prefixed with whatever you have set in your config.
 
 Eg.
 
@@ -82,10 +82,11 @@ Eg.
 s.Endpoint("/user/:id/:action", API_POST, NewUserEndpoint)
 ```
 
-Could be reached at http://localhost/user/1/new
+Could be reached at http://localhost/api/user/1/new
 
 Note that API_GET, API_POST, and API_BOTH are bit masked in order to determine allowed methods for the router.
 
-# this framework sucks
+# todo
 
-Sorry. It's meant for rapid prototyping. If you want more flexibility check out the Gin framework.
+- live reloading
+- client config module
