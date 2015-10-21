@@ -5,7 +5,7 @@ moon is a minimal backend web application framework written in Go. Its purpose i
 Out of the box the webpack config is extremely barebones. This is intentional, as the purpose of this project isn't to make frontend decisions.
 
 
-React is a good choice for a front-end framework to integrate with moon.
+React is a good choice for a frontend framework to integrate with moon.
 
 # config
 
@@ -79,10 +79,10 @@ Endpoints can have paramaterized syntax provided by httprouter. Just remember th
 Eg.
 
 ```go
-s.Endpoint("/user/:id/:action", API_POST, NewUserEndpoint)
+s.Endpoint("/user/:id/:action", API_POST, UserEndpoint)
 ```
 
-Could be reached at http://localhost/api/user/1/new
+Could be reached at http://localhost/api/user/1/edit
 
 Note that API_GET, API_POST, and API_BOTH are bit masked in order to determine allowed methods for the router.
 

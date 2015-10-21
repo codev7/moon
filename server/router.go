@@ -29,6 +29,7 @@ func (d *defaultApp) loadTemplate(tfile, js, style string) {
 		log.Errorln("Tpl err", err)
 		os.Exit(1)
 	}
+	defer f.Close()
 	b, err := ioutil.ReadAll(f)
 	if err != nil {
 		log.Errorln("Tpl read err", err)
