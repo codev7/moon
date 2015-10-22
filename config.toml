@@ -11,4 +11,3 @@ address = "localhost:8888"
 
 [client]
 entry = "entry.js"
-dir = "client"

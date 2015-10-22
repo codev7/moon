@@ -88,4 +88,3 @@ Note that `API_GET`, `API_POST`, and `API_BOTH` are bit masked in order to deter
 # todo
 
 - live reloading
-- client config module

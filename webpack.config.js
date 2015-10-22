@@ -1,16 +1,12 @@
+var path = require('path');
 var toml = require('toml');
 var fs = require('fs');
-var path = require('path');
-
-var config = function() {
-	var cfg = toml.parse(String(fs.readFileSync("config.toml")));
-	return Object.assign({}, cfg.common, cfg.client);
-}();
+var config = toml.parse(String(fs.readFileSync("config.toml")));
 
 module.exports = {
-	entry: path.join(__dirname, config.dir, config.entry),
+	entry: path.join(__dirname, "client", config.client.entry),
 	output: {
-		path: path.join(__dirname, config.static), 
-		filename: config.js
+		path: path.join(__dirname, config.common.static), 
+		filename: config.common.js
 	}
 };
