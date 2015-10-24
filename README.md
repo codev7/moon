@@ -12,7 +12,7 @@ _toml_ is used to configure moon applications.
 
 ```toml
 [common]	
-env = "dev" # dev|prod
+env = "development" # development|production
 js = "bundle.js" # Auto-prefixed with root
 style = "bundle.css" # Auto-prefixed with root
 static = "static" # Images, stubs, etc

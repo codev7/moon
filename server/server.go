@@ -78,9 +78,9 @@ func (c *Server) ParseConfig() {
 	}
 
 	var dev bool
-	if config.Common.Env == "dev" {
+	if config.Common.Env == "development" {
 		dev = true
-	} else if config.Common.Env == "prod" {
+	} else if config.Common.Env == "production" {
 		dev = false
 	} else {
 		log.Errorln("Invalid env", config.Common.Env)
