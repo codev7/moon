@@ -49,7 +49,7 @@ entry = "entry.js"
 
 1. API endpoints - prefixed with the `api` config entry 
 2. Static files stored in the directory set in the `static` config entry
-3. Default to client routing. If the prior two cases are not satisfied, the server will send the frontend application code. The application takes the form of an html5 template with a link and script tag pointing to the css and js bundles that were output by webpack. (when in hot mode these they bundles are served from memory instead) 
+3. Default to client routing. If the prior two cases are not satisfied, the server will send the frontend application code. The application takes the form of an html5 template with a link and script tag pointing to the css and js bundles that were output by webpack. (when in hot mode they are served from memory instead) 
 
 # Usage
 
