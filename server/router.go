@@ -48,51 +48,13 @@ func (d *defaultApp) loadTemplate(tfile, js, style, prefix string) {
 	d.template = tpl
 }
 
-func (r defaultApp) checkStaticFile(w http.ResponseWriter, req *http.Request) bool {
-	f, _ := r.filedir.Open(req.RequestURI)
-	if f != nil {
-		defer f.Close()
-		i, err := f.Stat()
-		if i.IsDir() {
-			return true
-		}
-		if err != nil {
-			log.Errorln("fstat", err)
-			http.Error(w, err.Error(), 500)
-			return false
-		}
-		buf := make([]byte, i.Size())
-		_, err = f.Read(buf)
-		if err != nil {
-			log.Errorln("fread", err)
-			http.Error(w, err.Error(), 500)
-			return false
-		}
-
-		_, err = w.Write(buf)
-		if err != nil {
-			log.Errorln("fwrite", err)
-			http.Error(w, err.Error(), 500)
-			return false
-		}
-		return false
-	}
-
-	return true
-}
-
 func (r defaultApp) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	log.Infoln(req.RemoteAddr, req.Method, req.RequestURI)
-	serveApp := true
-	// check for static file match
-	//serveApp := r.checkStaticFile(w, req)
 	// no file match, let client take care of routing
-	if serveApp {
-		if err := r.template.Execute(w, r.data); err != nil {
-			log.Errorln("tpl exec", err)
-			http.Error(w, err.Error(), 500)
-			return
-		}
+	if err := r.template.Execute(w, r.data); err != nil {
+		log.Errorln("tpl exec", err)
+		http.Error(w, err.Error(), 500)
+		return
 	}
 }
 
