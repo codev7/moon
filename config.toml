@@ -1,9 +1,20 @@
+# moon version 1.1.0
+
 [common]	
-env = "development" # development|production
-js = "bundle.js" # Auto-prefixed with root
-style = "bundle.css" # Auto-prefixed with root
-static = "static" # Images, stubs, etc
-api = "/api/" # prefix for api endpoints 
+# development|production
+env = "development"
+# Bundles, images, stubs, etc. 
+static = "static"
+# Auto-prefixed with static 
+js = "bundle.js"
+# Auto-prefixed with static 
+style = "bundle.css"
+# prefix for api endpoints 
+api = "/api/"
+# when server.hot is true the bundle is served via jsonp from webpack server
+hmr = "localhost:8889" 
+# enables live reload. NB. env must be development and hmr must be set
+hot = true 
 
 [server]
 template = "template.html.tpl"

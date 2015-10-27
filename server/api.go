@@ -23,7 +23,7 @@ func VersionEndpoint(w http.ResponseWriter, req *http.Request, _ httprouter.Para
 	}{
 		VERSION,
 	}
-	log.Infof("[%s] hit version api\n", req.RemoteAddr)
+	log.Infoln(req.RemoteAddr, req.Method, "version api")
 	data, _ := json.Marshal(ver)
 	//w.Header().Add("Content-type", "encoding/json")
 

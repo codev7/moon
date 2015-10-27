@@ -23,7 +23,7 @@ type defaultApp struct {
 	filedir  http.Dir
 }
 
-func (d *defaultApp) loadTemplate(tfile, js, style string) {
+func (d *defaultApp) loadTemplate(tfile, js, style, prefix string) {
 	f, err := os.Open(tfile)
 	if err != nil {
 		log.Errorln("Tpl err", err)
@@ -41,8 +41,9 @@ func (d *defaultApp) loadTemplate(tfile, js, style string) {
 		os.Exit(1)
 	}
 	d.data = map[string]string{}
-	d.data["Js"] = js
-	d.data["Style"] = style
+	log.Info(js, style)
+	d.data["Js"] = path.Join(prefix, js)
+	d.data["Style"] = path.Join(prefix, style)
 
 	d.template = tpl
 }
@@ -81,9 +82,10 @@ func (r defaultApp) checkStaticFile(w http.ResponseWriter, req *http.Request) bo
 }
 
 func (r defaultApp) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	log.Infof("%s\t%s\t%s", req.RemoteAddr, req.Method, req.RequestURI)
+	log.Infoln(req.RemoteAddr, req.Method, req.RequestURI)
+	serveApp := true
 	// check for static file match
-	serveApp := r.checkStaticFile(w, req)
+	//serveApp := r.checkStaticFile(w, req)
 	// no file match, let client take care of routing
 	if serveApp {
 		if err := r.template.Execute(w, r.data); err != nil {
@@ -99,11 +101,21 @@ func (s *Server) mapRoutes() {
 
 	cwd, _ := os.Getwd()
 	static := path.Join(cwd, s.config.static)
-	// ensure bundles exist
-	ensureBundles(s.config.js, s.config.style, static)
+	var prefix string
+	if s.config.hot {
+		// create the prefix necessary to load bundles from hmr server
+		prefix = s.config.hmr
+	} else {
+		// ensure bundles exist if not hot reloading
+		ensureBundles(s.config.js, s.config.style, static)
+		prefix = s.config.address
+	}
+	prefix = path.Join(prefix, s.config.static)
 	// create the default app (the route used to serve the client app)
 	app := defaultApp{filedir: http.Dir(static)}
-	app.loadTemplate(s.config.template, s.config.js, s.config.style)
+	app.loadTemplate(s.config.template, s.config.js, s.config.style, prefix)
+
+	r.ServeFiles(path.Join(base(s.config.static), "*filepath"), app.filedir)
 	// if it's not an api call then we use the app, after first checking
 	// if there's a file matching the route
 	r.NotFound = app

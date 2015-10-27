@@ -15,7 +15,7 @@ const (
 	CONFIG_FILE = "config.toml"
 )
 
-type Config struct {
+type config struct {
 	dev      bool
 	static   string
 	js       string
@@ -23,11 +23,13 @@ type Config struct {
 	template string
 	address  string
 	api      string
+	hmr      string
+	hot      bool
 }
 
 type Server struct {
 	router *httprouter.Router
-	config Config
+	config config
 }
 
 func (s *Server) Bootstrap() {
@@ -46,13 +48,15 @@ func (s *Server) Bootstrap() {
 
 func (c *Server) ParseConfig() {
 	log.Infoln("parsing config")
-	config := struct {
+	cfg := struct {
 		Common struct {
 			Env    string
 			Js     string
 			Style  string
 			Api    string
 			Static string
+			Hmr    string
+			Hot    bool
 		}
 		Server struct {
 			Template string
@@ -71,30 +75,44 @@ func (c *Server) ParseConfig() {
 		os.Exit(1)
 	}
 
-	_, err = toml.Decode(string(data), &config)
+	_, err = toml.Decode(string(data), &cfg)
 	if err != nil {
 		log.Errorln("Config parse", err)
 		os.Exit(1)
 	}
 
 	var dev bool
-	if config.Common.Env == "development" {
+	if cfg.Common.Env == "development" {
 		dev = true
-	} else if config.Common.Env == "production" {
+	} else if cfg.Common.Env == "production" {
 		dev = false
 	} else {
-		log.Errorln("Invalid env", config.Common.Env)
+		log.Errorln("Invalid env", cfg.Common.Env)
 		os.Exit(1)
 	}
 
-	c.config = Config{
+	if cfg.Common.Hot {
+		if !dev {
+			log.Errorln("Hot reloading isn't supported in production")
+			os.Exit(1)
+		}
+		if cfg.Common.Hmr == "" {
+			log.Errorln("Hot reloading can't be done without HMR endpoint")
+			os.Exit(1)
+		}
+		log.Warn("Hot reloading enabled. Don't use it in production!")
+	}
+
+	c.config = config{
 		dev:      dev,
-		static:   config.Common.Static,
-		js:       config.Common.Js,
-		style:    config.Common.Style,
-		api:      config.Common.Api,
-		template: config.Server.Template,
-		address:  config.Server.Address,
+		static:   cfg.Common.Static,
+		js:       cfg.Common.Js,
+		style:    cfg.Common.Style,
+		api:      cfg.Common.Api,
+		template: cfg.Server.Template,
+		address:  cfg.Server.Address,
+		hmr:      cfg.Common.Hmr,
+		hot:      cfg.Common.Hot,
 	}
 }
 
