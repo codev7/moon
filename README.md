@@ -1,8 +1,12 @@
 # moon v1.1.0
 
-moon is a minimal backend web application framework written in Go. Its purpose is to implement Single Page Applications (SPA) in a way best suited for rapid prototyping. It achieves this with hot module replacement, webpack, and opinionated routing.
+moon is a minimal web application framework written in Go, and makes use of Node.js during the development process. Its purpose is to implement Single Page Applications (SPA) in a way best suited for rapid prototyping. It achieves this by using React, hot module replacement, webpack, and opinionated routing.
 
-moon doesn't care what frontend framework you use, but the dependencies and architecture are very well suited for React applications.
+One thing to note is that the front-end build toolchain uses Node.js. Once your application is ready for production, you may remove Node.js as a dependency. 
+
+# Frontend Decisions
+
+The moon frontend uses [React 0.14.1](https://facebook.github.io/react/). React components are created using ES6 modules, see [Babel](https://babeljs.io/). moon has default support for [SASS](http://sass-lang.com/), but this may be configured quite easily to LESS or Stylus.
 
 # Hot Module Replacement (HMR)
 
@@ -56,7 +60,7 @@ entry = "entry.js"
 Things you will need:
 
 1. Go
-2. Node.js
+2. Node.js (4.0+ recommended)
 3. npm
 
 First thing you want to do is clone this repo. Enter the cloned directory and type:
@@ -102,3 +106,8 @@ s.Endpoint("/user/:id/:action", API_POST, UserEndpoint)
 Could be reached at `http://localhost/api/user/1/edit`
 
 Note that `API_GET`, `API_POST`, and `API_BOTH` are bit masked in order to determine allowed methods for the router.
+
+# Todo
+
+1. Implement React-router 1.0
+2. Make logging more modular

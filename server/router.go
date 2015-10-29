@@ -12,18 +12,18 @@ import (
 )
 
 const (
-	API_GET = iota << 1
+	API_GET = 1 << iota
 	API_POST
 	API_BOTH = 0xF
 )
 
 type defaultApp struct {
 	template *template.Template
-	data     map[string]string
+	data     map[string]interface{}
 	filedir  http.Dir
 }
 
-func (d *defaultApp) loadTemplate(tfile, js, style, prefix string) {
+func (d *defaultApp) loadTemplate(hot bool, tfile, js, style, prefix string) {
 	f, err := os.Open(tfile)
 	if err != nil {
 		log.Errorln("Tpl err", err)
@@ -40,10 +40,11 @@ func (d *defaultApp) loadTemplate(tfile, js, style, prefix string) {
 		log.Errorln("Tpl parse err", err)
 		os.Exit(1)
 	}
-	d.data = map[string]string{}
-	log.Info(js, style)
-	d.data["Js"] = path.Join(prefix, js)
-	d.data["Style"] = path.Join(prefix, style)
+	d.data = map[string]interface{}{
+		"Js":    path.Join(prefix, js),
+		"Style": path.Join(prefix, style),
+		"Hot":   hot,
+	}
 
 	d.template = tpl
 }
@@ -75,7 +76,7 @@ func (s *Server) mapRoutes() {
 	prefix = path.Join(prefix, s.config.static)
 	// create the default app (the route used to serve the client app)
 	app := defaultApp{filedir: http.Dir(static)}
-	app.loadTemplate(s.config.template, s.config.js, s.config.style, prefix)
+	app.loadTemplate(s.config.hot, s.config.template, s.config.js, s.config.style, prefix)
 
 	r.ServeFiles(path.Join(base(s.config.static), "*filepath"), app.filedir)
 	// if it's not an api call then we use the app, after first checking
