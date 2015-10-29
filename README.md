@@ -69,7 +69,7 @@ First thing you want to do is clone this repo. Enter the cloned directory and ty
 
 Open up a separate tty and type:
 
-`node webpack_.js`
+`npm start`
 
 Note that we aren't running webpack directly. This gives us a lot more power to control the environment.
 
