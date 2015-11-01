@@ -85,11 +85,11 @@ A simple Makefile is provided to build and run the server:
 
 `make run-server`
 
-Navigate to `http://localhost:8888` and verify that "Hello World" is output in your browser's console.
+Navigate to `http://localhost:8888` and verify that "Hello World!" is displayed.
 
 Check `http://localhost:8888/api/version` to see the endpoint support.
 
-Edit `/client/entry.js` and see that the code is automatically updated in your browser without a refresh.
+Edit `/client/components/app.js` and see that the code is automatically updated in your browser without a refresh.
 
 # Adding Endpoints
 
