@@ -1,16 +1,16 @@
 # moon v1.1.0
 
-moon is a minimal web application framework written in Go, and makes use of Node.js during the development process. Its purpose is to implement Single Page Applications (SPA) in a way best suited for rapid prototyping. It achieves this by using React, hot module replacement, webpack, and opinionated routing.
+moon is a minimal web application framework written in Go and React ES6. It uses Node.js buildtools extensively during the development process (ie. webpack). Its purpose is to implement Single Page Applications (SPA) in a way that optimizes for rapid prototyping. It achieves this with hot module replacement, webpack, react, and opinionated routing.
 
-One thing to note is that the front-end build toolchain uses Node.js. Once your application is ready for production, you may remove Node.js as a dependency. 
+Once your application is ready for production you can remove Node.js as a dependency. 
 
-# Frontend Decisions
+# Frontend Technologies 
 
-The moon frontend uses [React 0.14.1](https://facebook.github.io/react/). React components are created using ES6 modules, see [Babel](https://babeljs.io/). moon has default support for [SASS](http://sass-lang.com/), but this may be configured quite easily to LESS or Stylus.
+The moon frontend uses [React 0.14.1](https://facebook.github.io/react/). React components are created using ES6 modules, see [Babel](https://babeljs.io/). moon has default support for [SASS](http://sass-lang.com/), but this can be configured to LESS or Stylus through webpack config.
 
 # Hot Module Replacement (HMR)
 
-moon implements HMR very elegantly. It combines [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware) and [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) to serve hot client bundles from an HMR express server. The HMR server runs on a separate port from your Go server, pushing updates to the client via jsonp/CORS. This means that the responsibility of serving bundles is taken away from your Go server when moon is running in hot mode.
+moon implements HMR quite efficiently. It combines [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware) and [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) to serve hot client bundles from an HMR express server. The HMR server runs on a separate port from your Go server and pushes updates to the client via CORS.
  
 This stack is very lightweight, configurable, and pluggable.
 
@@ -106,8 +106,3 @@ s.Endpoint("/user/:id/:action", API_POST, UserEndpoint)
 Could be reached at `http://localhost/api/user/1/edit`
 
 Note that `API_GET`, `API_POST`, and `API_BOTH` are bit masked in order to determine allowed methods for the router.
-
-# Todo
-
-1. Implement React-router 1.0
-2. Make logging more modular
