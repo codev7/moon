@@ -1,4 +1,4 @@
-# moon v1.1.0
+# moon v1.1.3
 
 moon is a minimal web application framework written in Go and React ES6. It uses Node.js buildtools extensively during the development process (ie. webpack). Its purpose is to implement Single Page Applications (SPA) in a way that optimizes for rapid prototyping. It achieves this with hot module replacement, webpack, react, and opinionated routing.
 
@@ -23,7 +23,7 @@ _NB2. If you turn off `hot` mode while the servers are running, they will need t
 moon apps are configured using _toml_.
 
 ```toml
-# moon version 1.1.0
+# moon version 1.1.3
 
 [common]	
 # development|production
