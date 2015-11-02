@@ -1,4 +1,4 @@
-# moon v1.1.3
+# moon v1.1.4
 
 moon is a minimal web application framework written in Go and React ES6. It uses Node.js buildtools extensively during the development process (ie. webpack). Its purpose is to implement Single Page Applications (SPA) in a way that optimizes for rapid prototyping. It achieves this with hot module replacement, webpack, react, and opinionated routing.
 
@@ -54,6 +54,19 @@ entry = "entry.js"
 1. API endpoints - prefixed with the `api` config entry 
 2. Static files stored in the directory set in the `static` config entry
 3. Default to client routing. If the prior two cases are not satisfied, the server will send the frontend application code. The application takes the form of an html5 template with a link and script tag pointing to the css and js bundles that were output by webpack. (when in hot mode they are served from memory instead) 
+
+On the frontend, assuming the client bundle is served, the routing is deferred to react-router. Routes can be added per component from `/client/entry.js`:
+
+```javascript
+const routes = {
+	path: '/',
+	component: App,
+	childRoutes: [
+		{ path: 'about', component: About },
+		{ path: 'contact', component: Contact },
+	]
+}
+```
 
 # Usage
 
