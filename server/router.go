@@ -71,7 +71,12 @@ func (s *Server) mapRoutes() {
 	} else {
 		// ensure bundles exist if not hot reloading
 		ensureBundles(s.config.js, s.config.style, static)
-		prefix = s.config.address
+		if s.config.dev {
+			prefix = s.config.address
+		} else {
+			// production for reverse proxy support
+			prefix = s.config.serve
+		}
 	}
 	prefix = path.Join(prefix, s.config.static)
 	// create the default app (the route used to serve the client app)

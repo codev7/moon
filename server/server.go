@@ -23,6 +23,7 @@ type config struct {
 	template string
 	address  string
 	api      string
+	serve    string
 	hmr      string
 	hot      bool
 }
@@ -61,6 +62,7 @@ func (c *Server) ParseConfig() {
 		Server struct {
 			Template string
 			Address  string
+			Serve    string
 		}
 	}{}
 	f, err := os.Open(CONFIG_FILE)
@@ -106,6 +108,7 @@ func (c *Server) ParseConfig() {
 	c.config = config{
 		dev:      dev,
 		static:   cfg.Common.Static,
+		serve:    cfg.Server.Serve,
 		js:       cfg.Common.Js,
 		style:    cfg.Common.Style,
 		api:      cfg.Common.Api,

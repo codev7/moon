@@ -17,6 +17,9 @@ hot = true
 [server]
 template = "template.html.tpl"
 address = "localhost:8888"
+# when env is production it will prefix bundles with the serve option
+# this is useful for reverse proxies
+serve = "example.com"
 
 [client]
 entry = "entry.js"

@@ -38,12 +38,15 @@ style = "bundle.css"
 api = "/api/"
 # when server.hot is true the bundle is served via jsonp from webpack server
 hmr = "localhost:8889" 
-# enables live reload. env must be development and hmr must be set
+# enables live reload. NB. env must be development and hmr must be set
 hot = true 
 
 [server]
 template = "template.html.tpl"
 address = "localhost:8888"
+# when env is production it will prefix bundles with the serve option
+# this is useful for reverse proxies
+serve = "example.com"
 
 [client]
 entry = "entry.js"
