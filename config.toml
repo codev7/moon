@@ -12,7 +12,7 @@ api = "/api/"
 # when server.hot is true the bundle is served via jsonp from webpack server
 hmr = "localhost:8889" 
 # enables live reload. NB. env must be development and hmr must be set
-hot = true 
+hot = false 
 
 [server]
 template = "template.html.tpl"
