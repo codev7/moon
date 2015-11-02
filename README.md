@@ -11,6 +11,8 @@ The moon frontend uses [React 0.14.1](https://facebook.github.io/react/). React 
 # Hot Module Replacement (HMR)
 
 moon implements HMR quite efficiently. It combines [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware) and [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) to serve hot client bundles from an HMR express server. The HMR server runs on a separate port from your Go server and pushes updates to the client via CORS.
+
+To update react components it utilizes a stack based on [react-transform-hmr](https://github.com/gaearon/react-transform-hmr). 
  
 This stack is very lightweight, configurable, and pluggable.
 
