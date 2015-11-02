@@ -18,12 +18,13 @@ const routes = {
 	]
 };
 
-ReactDOM.render(
-	(<Router
+ReactDOM.render((
+	<Router
 		routes={routes}
-		history={createBrowserHistory()} />),
-		document.getElementById('app'))
+		history={createBrowserHistory()}
+	/>),
+	document.getElementById('app'))
 
 if(module.hot) {
-  module.hot.accept();
+	module.hot.accept();
 }
