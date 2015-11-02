@@ -20,33 +20,6 @@ const (
 type defaultApp struct {
 	template *template.Template
 	data     map[string]interface{}
-	filedir  http.Dir
-}
-
-func (d *defaultApp) loadTemplate(hot bool, tfile, js, style, prefix string) {
-	f, err := os.Open(tfile)
-	if err != nil {
-		log.Errorln("Tpl err", err)
-		os.Exit(1)
-	}
-	defer f.Close()
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
-		log.Errorln("Tpl read err", err)
-		os.Exit(1)
-	}
-	tpl, err := template.New("app").Parse(string(b))
-	if err != nil {
-		log.Errorln("Tpl parse err", err)
-		os.Exit(1)
-	}
-	d.data = map[string]interface{}{
-		"Js":    path.Join(prefix, js),
-		"Style": path.Join(prefix, style),
-		"Hot":   hot,
-	}
-
-	d.template = tpl
 }
 
 func (r defaultApp) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -63,27 +36,58 @@ func (s *Server) mapRoutes() {
 	r := s.router
 
 	cwd, _ := os.Getwd()
-	static := path.Join(cwd, s.config.static)
-	var prefix string
+	staticPath := path.Join(cwd, s.config.static)
+	var staticURL string
+	var staticBundleURL string
 	if s.config.hot {
 		// create the prefix necessary to load bundles from hmr server
-		prefix = s.config.hmr
+		staticBundleURL = s.config.hmr
+		staticURL = s.config.address
 	} else {
 		// ensure bundles exist if not hot reloading
-		ensureBundles(s.config.js, s.config.style, static)
+		ensureBundles(s.config.js, s.config.style, staticPath)
 		if s.config.dev {
-			prefix = s.config.address
+			staticBundleURL = s.config.address
+			staticURL = s.config.address
 		} else {
-			// production for reverse proxy support
-			prefix = s.config.serve
+			staticBundleURL = s.config.serve
+			staticURL = s.config.serve
 		}
 	}
-	prefix = path.Join(prefix, s.config.static)
+	staticBundleURL = path.Join(staticBundleURL, s.config.static)
+	staticURL = path.Join(staticURL, s.config.static)
+	log.Warnln(s.config.js)
+	log.Warnln(s.config.static)
 	// create the default app (the route used to serve the client app)
-	app := defaultApp{filedir: http.Dir(static)}
-	app.loadTemplate(s.config.hot, s.config.template, s.config.js, s.config.style, prefix)
+	app := defaultApp{}
+	// load template
+	f, err := os.Open(s.config.template)
+	if err != nil {
+		log.Errorln("Tpl err", err)
+		os.Exit(1)
+	}
+	defer f.Close()
+	b, err := ioutil.ReadAll(f)
+	if err != nil {
+		log.Errorln("Tpl read err", err)
+		os.Exit(1)
+	}
+	tpl, err := template.New("app").Parse(string(b))
+	if err != nil {
+		log.Errorln("Tpl parse err", err)
+		os.Exit(1)
+	}
+	app.data = map[string]interface{}{
+		"Js":     path.Join(staticBundleURL, s.config.js),
+		"Style":  path.Join(staticBundleURL, s.config.style),
+		"Static": staticURL,
+		"Hot":    s.config.hot,
+	}
+	log.Warnln(app.data)
+	app.template = tpl
 
-	r.ServeFiles(path.Join(base(s.config.static), "*filepath"), app.filedir)
+	// httprouter fileserver
+	r.ServeFiles(path.Join(base(s.config.static), "*filepath"), http.Dir(staticPath))
 	// if it's not an api call then we use the app, after first checking
 	// if there's a file matching the route
 	r.NotFound = app
