@@ -25,8 +25,6 @@ _NB2. If you turn off `hot` mode while the servers are running, they will need t
 moon apps are configured using _toml_.
 
 ```toml
-# moon version 1.1.3
-
 [common]	
 # development|production
 env = "development"
