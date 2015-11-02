@@ -16,7 +16,7 @@ const routes = {
 		{ path: 'about', component: About },
 		{ path: 'contact', component: Contact },
 	]
-};
+}
 
 ReactDOM.render((
 	<Router
