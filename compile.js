@@ -32,18 +32,18 @@ if (config.common.hot) {
     loaders: ['style', 'css', 'sass']
   };
 } else {
-	// set the env var programmatically - this is required for react-transform-hmr
-	process.env.NODE_ENV = 'production';
+  // set the env var programmatically - this is required for react-transform-hmr
+  process.env.NODE_ENV = 'production';
   // when in production we will save the css bundle so we don't need webpack in production, etc.
   var extractCss = require('extract-text-webpack-plugin');
   styleLoader = {
     test: /\.scss$/,
-    loader: extractCss.extract('style', 'css', 'sass')
+    loader: extractCss.extract('style', 'css!sass')
   };
   // and push the extract plugin
   plugins.push(new extractCss(config.common.style));
-	// minimize javascript
-	plugins.push(new webpack.optimize.UglifyJsPlugin({compress: {}}))
+  // minimize javascript
+  plugins.push(new webpack.optimize.UglifyJsPlugin({compress: {}}))
 }
 
 var webpackConfig = {
