@@ -38,7 +38,7 @@ if (config.common.hot) {
   var extractCss = require('extract-text-webpack-plugin');
   styleLoader = {
     test: /\.scss$/,
-    loader: extractCss.extract('style', 'css', 'sass')
+    loader: extractCss.extract('style', 'css!sass')
   };
   // and push the extract plugin
   plugins.push(new extractCss(config.common.style));
