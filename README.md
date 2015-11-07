@@ -6,7 +6,7 @@ Once your application is ready for production you can remove Node.js as a depend
 
 # Frontend Technologies 
 
-The moon frontend uses [React 0.14.1](https://facebook.github.io/react/). React components are created using ES6 modules, see [Babel](https://babeljs.io/). moon has default support for [SASS](http://sass-lang.com/), but this can be configured to LESS or Stylus through webpack config.
+The moon frontend uses [React 0.14.2](https://facebook.github.io/react/). React components are created using ES6 modules, see [Babel](https://babeljs.io/). moon has default support for [SASS](http://sass-lang.com/), but this can be configured to LESS or Stylus through webpack config.
 
 # Hot Module Replacement (HMR)
 
