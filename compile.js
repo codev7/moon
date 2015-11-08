@@ -28,7 +28,7 @@ if (config.common.hot) {
   publicPath = 'http://' + path.join(config.common.hmr, '/', config.common.static, '/');
   // the default method of style loading can be used in hot mode
   styleLoader = {
-    test: /\.scss$/,
+    test: /\.s?css$/,
     loaders: ['style', 'css', 'sass']
   };
 } else {
