@@ -37,7 +37,7 @@ if (config.common.hot) {
   // when in production we will save the css bundle so we don't need webpack in production, etc.
   var extractCss = require('extract-text-webpack-plugin');
   styleLoader = {
-    test: /\.scss$/,
+    test: /\.s?css$/,
     loader: extractCss.extract('style', 'css!sass')
   };
   // and push the extract plugin
