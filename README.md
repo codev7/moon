@@ -1,24 +1,14 @@
 # moon v1.1.4
 
-moon is a minimal web application framework written in Go and React ES6. It uses Node.js buildtools extensively during the development process (ie. webpack). Its purpose is to implement Single Page Applications (SPA) in a way that optimizes for rapid prototyping. It achieves this with hot module replacement, webpack, react, and opinionated routing.
-
-Once your application is ready for production you can remove Node.js as a dependency. 
-
-# Frontend Technologies 
-
-The moon frontend uses [React 0.14.2](https://facebook.github.io/react/). React components are created using ES6 modules, see [Babel](https://babeljs.io/). moon has default support for [SASS](http://sass-lang.com/), but this can be configured to LESS or Stylus through webpack config.
+moon is a minimal web application framework written in Go and React ES6. It uses npm and Node.js buildtools extensively during the development process (ie. webpack, babel, react jsx, scss). moon makes it easy to create and rapid prototype Single Page Applications (SPA). When your application is ready for production you can remove node.js as a dependency. 
 
 # Hot Module Replacement (HMR)
 
-moon implements HMR quite efficiently. It combines [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware) and [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) to serve hot client bundles from an HMR express server. The HMR server runs on a separate port from your Go server and pushes updates to the client via CORS.
+moon implements HMR for react and displays error messages in your browser. It combines [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware) and [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) to serve hot client bundles from an HMR express server. The HMR server runs on a separate port from your Go server and pushes updates to the client via CORS.
 
 To update react components it utilizes a stack based on [react-transform-hmr](https://github.com/gaearon/react-transform-hmr). 
  
-This stack is very lightweight, configurable, and pluggable.
-
-_NB. Your Go server will still serve API endpoints and other static assets during hot mode._
-
-_NB2. If you turn off `hot` mode while the servers are running, they will need to be restarted in order to serve the proper bundles.`_
+_Your Go server will still serve API endpoints and other static assets during hot mode. If you turn off `hot` mode while the servers are running, they will need to be restarted in order to serve the proper bundles._
 
 # Config
 
@@ -26,20 +16,13 @@ moon apps are configured using _toml_.
 
 ```toml
 [common]	
-# development|production
-env = "development"
-# Bundles, images, stubs, etc. 
-static = "static"
-# Auto-prefixed with static 
-js = "bundle.js"
-# Auto-prefixed with static 
-style = "bundle.css"
-# prefix for api endpoints 
-api = "/api/"
-# when server.hot is true the bundle is served via jsonp from webpack server
-hmr = "localhost:8889" 
-# enables live reload. NB. env must be development and hmr must be set
-hot = true 
+env = "development" # development|production
+static = "static" # Bundles, images, stubs, etc. 
+js = "bundle.js" # Auto-prefixed with static 
+style = "bundle.css" # Auto-prefixed with static 
+api = "/api/" # prefix for api endpoints 
+hot = true # enables live reload. env must be development and hmr must be set
+hmr = "localhost:8889" # when hot flag is true the bundle is served via jsonp from webpack server 
 
 [server]
 template = "template.html.tpl"
@@ -73,21 +56,19 @@ const routes = {
 
 # Usage
 
-Things you will need:
+Make sure you have:
 
 1. Go
 2. Node.js (4.0+ recommended)
 3. npm
 
-First thing you want to do is clone this repo. Enter the cloned directory and type:
+Clone this repo. Enter the root directory and type:
 
 `npm install`
 
 Open up a separate tty and type:
 
 `npm start`
-
-Note that we aren't running webpack directly. This gives us a lot more power to control the environment.
 
 Make sure you have the Go dependencies to run the server. Assuming you have set your GOPATH, just manually install the 3 dependencies:
 
@@ -109,16 +90,18 @@ Edit `/client/components/app.js` and see that the code is automatically updated 
 
 # Adding Endpoints
 
-A simple version endpoint is provided in the `/server/api.go` file. You can manage all of your endpoints from this file. Endpoints must implement `httprouter.Handle`. In other words they need the same signature as the `VersionEndpoint` function. 
+A simple version endpoint is provided in the `/server/api.go` file. You can manage all of your endpoints from this file if you want.
+
+_Endpoints must implement `httprouter.Handle`. In other words they need the same signature as the `VersionEndpoint` function._ 
 
 To add your own endpoint, create a new function with the same signature as `VersionEndpoint`. Then add the endpoint as shown below. 
 
-Endpoints can have parameterized syntax provided by `httprouter`. Just remember that the endpoint will be prefixed with whatever you have set in your config. For example:
+Endpoints can have parameterized syntax provided by [httprouter](https://github.com/julienschmidt/httprouter). Just remember that the endpoint will be prefixed with whatever you have set in your config. For example:
 
 ```go
 s.Endpoint("/user/:id/:action", API_POST, UserEndpoint)
 ```
 
-Could be reached at `http://localhost/api/user/1/edit`
+Could be reached at `http://localhost:8888/api/user/1/edit`
 
 Note that `API_GET`, `API_POST`, and `API_BOTH` are bit masked in order to determine allowed methods for the router.

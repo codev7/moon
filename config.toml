@@ -1,6 +1,6 @@
 [common]	
 # development|production
-env = "development"
+env = "production"
 # Bundles, images, stubs, etc. 
 static = "static"
 # Auto-prefixed with static 
@@ -12,14 +12,15 @@ api = "/api/"
 # when server.hot is true the bundle is served via jsonp from webpack server
 hmr = "localhost:8889" 
 # enables live reload. NB. env must be development and hmr must be set
-hot = true 
+hot = false 
 
 [server]
 template = "template.html.tpl"
 address = "localhost:8888"
 # when env is production it will prefix bundles with the serve option
 # this is useful for reverse proxies
-serve = "example.com"
+serve = "localhost:8888"
+
 
 [client]
 entry = "entry.js"
