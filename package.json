@@ -1,6 +1,6 @@
 {
   "name": "gomoon",
-  "version": "1.1.0",
+  "version": "1.1.4",
   "description": "Go web application framework",
   "author": "huoy",
   "license": "Apache-2.0",
