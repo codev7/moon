@@ -4,7 +4,7 @@ export default
 class Contact extends React.Component {
 	render() {
 		return (
-			<div>Contact page!</div>
+			<div>Contact content</div>
 		)
 	}
 }
